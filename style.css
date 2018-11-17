@@ -1,0 +1,101 @@
+html, body
+{
+	margin: 0;
+	padding: 0;
+	background-color: #CCDDBB;
+}
+canvas
+{
+	margin-top: 60px;
+	margin-left: 20px;
+	outline: 1px solid green;
+	display: block;
+}
+
+.labels
+{
+	margin-left: 20px;
+	width: 220px;
+	text-align: right;
+	line-height: 1.5;
+	font-weight: bold;
+}
+
+.notes
+{
+	margin-left: 20px;
+	border-radius: 25px;
+	max-width: 860px;
+	width: auto;
+	padding: 10px;
+	padding-left: 20px;
+	background: #CCEEBB;
+	font-weight: normal;
+	box-shadow: 0px 0px 8px 1px rgba(0, 51, 0, 0.5);
+}
+
+.failed
+{
+	margin-left: 20px;
+	border-radius: 25px;
+	max-width: 400px;
+	margin-bottom: 20px;
+	padding: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	background: #EECCBB;
+	font-weight: normal;
+	box-shadow: 0px 0px 8px 1px rgba(0, 51, 0, 0.5);
+}
+
+
+li
+{
+	margin-left: 20px;
+}
+
+button
+{
+	margin-left: 20px;
+}
+
+input
+{
+	margin-left: 10px;
+}
+
+input[type=checkbox]
+{
+	transform: scale(1.2);
+}
+
+.gen_button
+{
+	transform: scale(1.2);
+}
+
+.title
+{
+	border-radius: 25px;
+	margin-left: 20px;
+	margin-top: 12px;
+	background: #CCFFBB;
+	padding: 3px;
+	padding-left: 10px;
+	padding-right: 10px;
+	box-shadow: 0px 0px 8px 1px rgba(0, 51, 0, 0.5);
+}
+
+.footer
+{
+	position: fixed;
+	font-family: consolas;
+	border-radius: 25px;
+	right: 20px;
+	background: #99ffcc;
+	padding: 10px;
+	padding-left: 15px;
+	padding-right: 15px;
+	box-shadow: 0px 0px 8px 1px rgba(0, 51, 0, 0.5);
+    bottom: 0;
+}
