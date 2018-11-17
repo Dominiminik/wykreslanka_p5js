@@ -49,13 +49,12 @@ function createAndPositionElements()
 	labels.attribute('class', 'labels');
 	labels.position(0, numOfCells * cellSize + 60);
 	
-	additionalNotes = createElement('ul', '<b>Uwagi:</b><li>bez dostarczenia pliku z danymi wyrazy losowane są z domyślnej listy 100 angielskich wyrazów</li><li>w celu wyświetlania polskich znaków należy ustawić kodowanie ładowanego pliku na UTF-8</li><li>format danych wejściowych: w pliku tekstowym każdy wyraz w nowej linii</li><li>jeśli poszukiwanie miejsca dla wyrazu trwa zbyt długo, zostaje on odrzucony i wyświetlony na liście u dołu strony (w przypadku, gdy po kilku próbach wyrazy nadal są odrzucane, należy zwiększyć rozmiar planszy)</li>');
+	additionalNotes = createElement('ul', '<b>Uwagi:</b><li>bez dostarczenia pliku z danymi wyrazy losowane są z domyślnej listy 100 angielskich wyrazów</li><li>w celu wyświetlania polskich znaków należy ustawić kodowanie ładowanego pliku na UTF-8</li><li>format danych wejściowych: w pliku tekstowym każdy wyraz w nowej linii</li><li>jeśli poszukiwanie miejsca dla wyrazu trwa zbyt długo, zostaje on odrzucony i wyświetlony na czerwonej liście (w przypadku, gdy po kilku próbach wyrazy nadal są odrzucane, należy zwiększyć rozmiar planszy lub zmniejszyć ilość słów)</li>');
 	additionalNotes.attribute('class', 'notes');
-	additionalNotes.position(0, startY + 20 * 10);
+	additionalNotes.position(0, startY + 20 * 8);
 	
 	failedWords = createElement('p', '<b>Niezapisane słowa:</b><br>');
 	failedWords.attribute('class', 'failed');
-	failedWords.position(0, startY + 20 * 12 + additionalNotes.height);
 	failedWords.hide();
 	
 	boardSizeInput = createInput(numOfCells);
@@ -122,7 +121,6 @@ function generate()
 	startY = numOfCells * cellSize + 78;
 	
 	labels.position(0, numOfCells * cellSize + 60);
-	additionalNotes.position(0, startY + 20 * 10);
 	boardSizeInput.position(startX, startY);
 	cellSizeInput.position(startX, startY + offset);
 	wordsToFindInput.position(startX, startY + offset * 2);
@@ -138,11 +136,13 @@ function generate()
 	if (rejectedWords.length > 0)
 	{
 		failedWords.html('<b>Niezapisane słowa:</b><br>' + rejectedWords.join(', '));
-		failedWords.position(0, startY + 20 * 12 + additionalNotes.height + 20);
+		failedWords.position(0, startY + 20 * 8);
 		failedWords.show();
+		additionalNotes.position(0, startY + 20 * 8 + failedWords.size().height + 20);
 	}
 	else
 	{
+		additionalNotes.position(0, startY + 20 * 8);
 		failedWords.hide();
 	}
 	
