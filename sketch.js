@@ -685,7 +685,14 @@ function draw()
 	{
 		for (let j = 0; j < grid[i].length; ++j)
 		{
-			hideRandomLetters ? grid[i][j].show() : randomLettersGrid[i][j].show();
+			if (hideRandomLetters)
+			{
+				grid[i][j].show();
+			}
+			else
+			{
+				randomLettersGrid[i][j].show();
+			}
 		}
 	}
 	
