@@ -38,6 +38,7 @@ var startX = 240;
 var startY = numOfCells * cellSize + 78;
 var fieldSize = 50;
 var offset = 23;
+var lettersReady = false;
 
 function createAndPositionElements()
 {
@@ -132,6 +133,8 @@ function generate()
 	
 	loadWordsToGrid();
 	generateLetters();
+	
+	lettersReady = true;
 	
 	if (rejectedWords.length > 0)
 	{
@@ -685,13 +688,9 @@ function draw()
 	{
 		for (let j = 0; j < grid[i].length; ++j)
 		{
-			if (hideRandomLetters)
+			if (lettersReady)
 			{
-				grid[i][j].show();
-			}
-			else
-			{
-				randomLettersGrid[i][j].show();
+				hideRandomLetters ? grid[i][j].show() : randomLettersGrid[i][j].show();
 			}
 		}
 	}
