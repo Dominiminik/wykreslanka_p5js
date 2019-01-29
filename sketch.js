@@ -39,6 +39,7 @@ var startY = numOfCells * cellSize + 78;
 var fieldSize = 50;
 var offset = 23;
 var lettersReady = false;
+var sidebarWordsReady = false;
 
 function createAndPositionElements()
 {
@@ -627,6 +628,8 @@ function getDistinctWords(availableWords)
 			wordsCopy.push(word);
 		}
 	}
+	
+	sidebarWordsReady = true;
 }
 
 
@@ -695,7 +698,7 @@ function draw()
 		}
 	}
 	
-	if (wordsOnTheSide)
+	if (wordsOnTheSide && sidebarWordsReady)
 	{	
 		textAlign(CENTER, TOP);
 		text(getWordsForSidebar(), numOfCells * cellSize + 20, 20, cellSize * textFieldSize - 35, numOfCells * cellSize - 30);
