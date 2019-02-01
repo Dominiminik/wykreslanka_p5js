@@ -17,121 +17,132 @@ function setup()
 	grid = makeBoard(numOfCells);
 	
 	createAndPositionElements();
-	
 	pixelDensity(2);
+	styleConfiguration();
 }
 
 var boardSizeInput;
 var cellSizeInput;
 var wordsToFindInput;
-var saveFileCheckbox;
-var hideLettersCheckbox;
-var showWordsCheckbox;
-var generateButton;
-var saveButton;
-var fileInput;
-var labels;
-var additionalNotes;
-var failedWords;
-var title;
-var startX = 240;
-var startY = numOfCells * cellSize + 78;
-var fieldSize = 50;
-var offset = 23;
 var lettersReady = false;
 var sidebarWordsReady = false;
 
+function styleConfiguration()
+{
+	c.parent("canvas_section");
+}
+
 function createAndPositionElements()
 {
-	title = createElement('h2', 'Generator wykreślanek');
-	title.attribute('class', 'title');
-	title.position(0, 0);
+	document.getElementById("info_p").innerHTML = "<li>bez dostarczenia pliku z danymi wyrazy losowane są z domyślnej listy 100 angielskich wyrazów</li><li>w celu wyświetlania polskich znaków należy ustawić kodowanie ładowanego pliku na UTF-8</li><li>format danych wejściowych: w pliku tekstowym każdy wyraz w nowej linii</li>";
+		
+	let table = createElement("table");
 	
-	labels = createElement('p', 'Rozmiar planszy:<br>Rozmiar komórki:<br>Liczba wyrazów do znalezienia:<br>Ukryj losowe litery:<br>Pokaż listę wyrazów:<br>Plik z danymi:');
-	labels.attribute('class', 'labels');
-	labels.position(0, numOfCells * cellSize + 60);
+	let tableLeftColumn =
+	[
+		"Rozmiar planszy:",
+		"Rozmiar komórki:",
+		"Liczba wyrazów do znalezienia:",
+		"Ukryj losowe litery:",
+		"Pokaż listę wyrazów:",
+		"Plik z danymi:",
+	];
 	
-	additionalNotes = createElement('ul', '<b>Uwagi:</b><li>bez dostarczenia pliku z danymi wyrazy losowane są z domyślnej listy 100 angielskich wyrazów</li><li>w celu wyświetlania polskich znaków należy ustawić kodowanie ładowanego pliku na UTF-8</li><li>format danych wejściowych: w pliku tekstowym każdy wyraz w nowej linii</li><li>jeśli poszukiwanie miejsca dla wyrazu trwa zbyt długo, zostaje on odrzucony i wyświetlony na czerwonej liście (w przypadku, gdy po kilku próbach wyrazy nadal są odrzucane, należy zwiększyć rozmiar planszy lub zmniejszyć ilość słów)</li>');
-	additionalNotes.attribute('class', 'notes');
-	additionalNotes.position(0, startY + 20 * 8);
+	let tableRightColumn =
+	[
+		"<input id=\"board_size_input\" type=\"number\" min=\"1\" max=\"50\" placeholder=\"1 - 50\">",
+		"<input id=\"cell_size_input\" type=\"number\" min=\"1\" max=\"100\" placeholder=\"1 - 100\">",
+		"<input id=\"num_of_words\" type=\"number\" min=\"1\" max=\"100\" placeholder=\"1 - 100\">",
+		"<input type=\"checkbox\" onclick=\"hideShowLetters()\">",
+		"<input type=\"checkbox\" checked=\"checked\" onclick=\"hideShowWords()\">",
+		"<input type=\"file\" id=\"file_input\" style=\"display:none\" onchange=\"handleFiles()\" accept=\".txt\"><input id=\"file_button\" class=\"buttons\" type=\"button\" value=\"Wybierz plik\" onclick=\"document.getElementById('file_input').click();\">",
+	];
 	
-	failedWords = createElement('p', '<b>Niezapisane słowa:</b><br>');
-	failedWords.attribute('class', 'failed');
-	failedWords.hide();
+	let tableData = "";
 	
-	boardSizeInput = createInput(numOfCells);
-	boardSizeInput.size(fieldSize);
-	boardSizeInput.position(startX, startY);
-	boardSizeInput.attribute('min', '1');
-	boardSizeInput.attribute('max', '50');
-	boardSizeInput.attribute('type', 'number');
+	let numberOfRows = tableLeftColumn.length == tableRightColumn.length ? tableLeftColumn.length : 0;
 	
-	cellSizeInput = createInput(cellSize);
-	cellSizeInput.size(fieldSize);
-	cellSizeInput.position(startX, startY + offset);
-	cellSizeInput.attribute('min', '1');
-	cellSizeInput.attribute('max', '100');
-	cellSizeInput.attribute('type', 'number');
+	for (let i = 0; i < numberOfRows; ++i)
+	{
+		tableData += "<tr><td class=\"left_column\">";
+		tableData += tableLeftColumn[i];
+		tableData += "</td><td class=\"right_column\">";
+		tableData += tableRightColumn[i];
+		tableData += "</td></tr>";
+	}
 	
-	wordsToFindInput = createInput(numOfWordsToFind);
-	wordsToFindInput.size(fieldSize);
-	wordsToFindInput.position(startX, startY + offset * 2);
-	wordsToFindInput.attribute('min', '1');
-	wordsToFindInput.attribute('max', '100');
-	wordsToFindInput.attribute('type', 'number');
+	table.html(tableData);
+	table.class("config_table");
+	table.parent("table_section");
 	
-	hideLettersCheckbox = createCheckbox('', hideRandomLetters);
-	hideLettersCheckbox.position(startX + 0.37 * fieldSize, startY + offset * 3 + 4);
-	hideLettersCheckbox.changed(hideShowLetters);
-	
-	showWordsCheckbox = createCheckbox('', wordsOnTheSide);
-	showWordsCheckbox.position(startX + 0.37 * fieldSize, startY + offset * 4 + 5);
-	showWordsCheckbox.changed(hideShowWords);
-	
-	generateButton = createButton('Generuj');
-	generateButton.attribute('class', 'gen_button');
-	generateButton.position(startX + 170, startY + offset * 2 + 10);
-	generateButton.mousePressed(generate);
-	
-	saveButton = createButton('Zapisz');
-	saveButton.attribute('class', 'gen_button');
-	saveButton.position(generateButton.x + generateButton.width + 30, generateButton.y);
-	saveButton.mousePressed(saveGeneratedImage);
-	
-	fileInput = createFileInput(handleFile);
-	fileInput.position(startX, startY + offset * 5 + 6);
+	let buttonsSection = "<button class=\"buttons\" type=\"button\" onclick=\"generate()\">Generuj</button><button class=\"buttons\" type=\"button\" onclick=\"saveGeneratedImage()\">Zapisz planszę</button>";
+	let buttonsDiv = createElement("div");
+	buttonsDiv.html(buttonsSection);
+	buttonsDiv.class("buttons_section");
+	buttonsDiv.parent("config_section");
 }
 
 
 function generate()
 {
-	numOfCells = boardSizeInput.value() ? parseInt(boardSizeInput.value()) : numOfCells;
+	boardSizeInput = document.getElementById("board_size_input");
+	cellSizeInput = document.getElementById("cell_size_input");
+	wordsToFindInput = document.getElementById("num_of_words");
+	
+	if (boardSizeInput.value == "")
+	{
+		boardSizeInput.value = "15";
+	}
+	else if (parseInt(boardSizeInput.value) > 50)
+	{
+		boardSizeInput.value = "50";	
+	}
+	else if (parseInt(boardSizeInput.value) < 5)
+	{
+		boardSizeInput.value = "5";	
+	}
+	
+	if (cellSizeInput.value == "")
+	{
+		cellSizeInput.value = "30";
+	}
+	else if (parseInt(cellSizeInput.value) > 100)
+	{
+		cellSizeInput.value = "100";	
+	}
+	else if (parseInt(cellSizeInput.value) < 1)
+	{
+		cellSizeInput.value = "1";	
+	}
+	
+	if (wordsToFindInput.value == "")
+	{
+		wordsToFindInput.value = "10";
+	}
+	else if (parseInt(wordsToFindInput.value) > 100)
+	{
+		wordsToFindInput.value = "100";	
+	}
+	else if (parseInt(wordsToFindInput.value) < 1)
+	{
+		wordsToFindInput.value = "1";	
+	}
+	
+	numOfCells = parseInt(boardSizeInput.value) ? parseInt(boardSizeInput.value) : numOfCells;
 	numOfCells = numOfCells > 50 ? 50 : numOfCells;
 	numOfCells = numOfCells < 5 ? 5 : numOfCells;
 	
-	cellSize = cellSizeInput.value() ? parseInt(cellSizeInput.value()) : cellSize;
+	cellSize = parseInt(cellSizeInput.value) ? parseInt(cellSizeInput.value) : cellSize;
 	cellSize = cellSize > 100 ? 100 : cellSize;
 	cellSize = cellSize < 1 ? 1 : cellSize;
 	
-	numOfWordsToFind = wordsToFindInput.value() ? parseInt(wordsToFindInput.value()) : numOfWordsToFind;
+	numOfWordsToFind = parseInt(wordsToFindInput.value) ? parseInt(wordsToFindInput.value) : numOfWordsToFind;
 	numOfWordsToFind = numOfWordsToFind > 100 ? 100 : numOfWordsToFind;
 	numOfWordsToFind = numOfWordsToFind < 1 ? 1 : numOfWordsToFind;
 	
 	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1), numOfCells * cellSize + 1);
 	grid = makeBoard(numOfCells);
-	
-	startY = numOfCells * cellSize + 78;
-	
-	labels.position(0, numOfCells * cellSize + 60);
-	boardSizeInput.position(startX, startY);
-	cellSizeInput.position(startX, startY + offset);
-	wordsToFindInput.position(startX, startY + offset * 2);
-	hideLettersCheckbox.position(startX + 0.37 * fieldSize, startY + offset * 3 + 4);
-	showWordsCheckbox.position(startX + 0.37 * fieldSize, startY + offset * 4 + 5);
-	generateButton.position(startX + 170, startY + offset * 2 + 10);
-	saveButton.position(generateButton.x + generateButton.width + 30, generateButton.y);
-	fileInput.position(startX, startY + offset * 5 + 6);
-	
+		
 	loadWordsToGrid();
 	generateLetters();
 	
@@ -139,17 +150,16 @@ function generate()
 	
 	if (rejectedWords.length > 0)
 	{
-		failedWords.html('<b>Niezapisane słowa:</b><br>' + rejectedWords.join(', '));
-		failedWords.position(0, startY + 20 * 8);
-		failedWords.show();
-		additionalNotes.position(0, startY + 20 * 8 + failedWords.size().height + 20);
+		document.getElementById("rejected_words").innerHTML = rejectedWords.join(', ');
+		document.getElementById("rejected").style.display = "inline";
+		document.getElementById("rejected").classList.add("animatedButton");
 	}
 	else
 	{
-		additionalNotes.position(0, startY + 20 * 8);
-		failedWords.hide();
+		document.getElementById("rejected").style.display = "none";
 	}
 	
+	styleConfiguration();
 	draw();
 }
 
@@ -166,7 +176,8 @@ function hideShowWords()
 	}
 	
 	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1), numOfCells * cellSize + 1);
-
+	
+	styleConfiguration();
 	draw();
 }
 
@@ -184,6 +195,7 @@ function hideShowLetters()
 	
 	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1), numOfCells * cellSize + 1);
 	
+	styleConfiguration();
 	draw();
 }
 
@@ -198,33 +210,34 @@ var customWords;
 var externalFile = false;
 
 // handling a file provided by the user
-function handleFile(file)
-{
-	if (file.type != 'text')
+function handleFiles()
+{	
+	var file = document.getElementById("file_input").files[0];
+	var reader = new FileReader();
+	
+	reader.onload = function(e)
 	{
-		alert('Nieprawidłowy format pliku.');
-		externalFile = false;
-		return;
+		var text = reader.result;
+		text = text.split('\n');
+		getDataFromFile(text);
 	}
 	
+	try
+	{
+		reader.readAsText(file, "ISO-8859-1");
+	}
+	catch (e) {  }
+}
+
+function getDataFromFile(text)
+{
 	externalFile = true;
 	customWords = [];
-	let tempArray = [];
 	
-	for (let i = 0; i < file.data.length; ++i)
+	for (let i = 0; i < text.length; ++i)
 	{
-		tempArray.push(file.data[i]);
-	}
-	
-	var s = tempArray.join('');
-	s = s.split('\n');
-	
-	for (let i = 0; i < s.length; ++i)
-	{
-		var word = String(s[i]);
-		word = word.replace(/\s/g, '');
-		customWords.push(word);
-	}
+		customWords.push(String(text[i].trim()));
+	}	
 }
 
 
@@ -333,7 +346,7 @@ function findLocationAndDirection(word)
 		
 		if (++inf > 1000)
 		{
-			alert('Błąd w generowaniu planszy (nieprawidłowe wartości lub błąd wewnętrzny)');
+			// alert('Błąd w generowaniu planszy (sprawdź wartości parametrów i poprawność danych w pliku)');
 			return;
 		}
 		
@@ -614,7 +627,7 @@ function getDistinctWords(availableWords)
 		
 		if (++inf > 1000)
 		{
-			alert('Błąd w generowaniu planszy (nieprawidłowe wartości lub błąd wewnętrzny)');
+			// alert('Sprawdź poprawność danych w dołączonym pliku\n(każdy wyraz w osobnej linii)');
 			return;
 		}
 		
@@ -691,9 +704,13 @@ function draw()
 	{
 		for (let j = 0; j < grid[i].length; ++j)
 		{
-			if (lettersReady)
+			try
 			{
-				hideRandomLetters ? grid[i][j].show() : randomLettersGrid[i][j].show();
+				if (lettersReady) hideRandomLetters ? grid[i][j].show() : randomLettersGrid[i][j].show();
+			}
+			catch (e)
+			{
+				console.log(e.message);	
 			}
 		}
 	}

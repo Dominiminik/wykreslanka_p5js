@@ -1,16 +1,51 @@
 <!DOCTYPE html><html><head>
+	<meta charset="utf-8">
+	<title>Generator wykreślanek</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link href="https://fonts.googleapis.com/css?family=Aleo" rel="stylesheet">
     <script src="p5.min.js"></script>
     <script src="p5.dom.min.js"></script>
     <script src="p5.sound.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf-8">
-	  
+	<script src="script.js"></script>
 	<script src="sketch.js"></script>
 	<script src="cell.js"></script>
-	  
-  </head>
-  <body>
-	  <p class="footer">Kontakt: dominik.kobyra@gmail.com</p>
-  
+</head>
+	
+<body>
+	<div class="container">
+		
+		<header id="head">
+			<h1>Generator wykreślanek</h1>
+		</header>
+			
+		<main id="main_section">
+			<div id="canvas_section"></div>
+			<div id="config_section">
+				<div id="table_section"></div>
+			</div>
+			<div id="mySidenav" class="sidenav">
+				<a id="about">i</a>
+				<a id="rejected">!</a>
+			</div>
+		</main>
+			
+		<footer id="bottom">
+			<p>Autor: Dominik Kobyra<br>E-mail: dominik.kobyra@gmail.com</p>
+		</footer>
+			
+	</div>
+	
+	<div id="info">
+		<p id="info_p">asdasdas</p>
+		<a id="about_hide">Zamknij</a>
+	</div>
+	
+	<div id="rej_div">
+		<p>Niezapisane słowa (zbyt mała plansza lub zbyt dużo słów):</p>
+		<p id="rejected_words"></p>
+		<a id="rejected_hide">Zamknij</a>
+	</div>
+
+	
 
 </body></html>
