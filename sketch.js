@@ -10,10 +10,11 @@ var grid;
 var wordsList = [];
 var textFieldSize = 7;
 var c;
+var spacing = 10;
 
 function setup()
 {	
-	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1), numOfCells * cellSize + 1);
+	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1) + 2 * spacing + (numOfCells - 1) * (spacing / 2), numOfCells * cellSize + 1 + 2 * spacing + (numOfCells - 1) * (spacing / 2));
 	grid = makeBoard(numOfCells);
 	
 	createAndPositionElements();
@@ -140,7 +141,7 @@ function generate()
 	numOfWordsToFind = numOfWordsToFind > 100 ? 100 : numOfWordsToFind;
 	numOfWordsToFind = numOfWordsToFind < 1 ? 1 : numOfWordsToFind;
 	
-	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1), numOfCells * cellSize + 1);
+	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1) + 2 * spacing + (numOfCells - 1) * (spacing / 2), numOfCells * cellSize + 1 + 2 * spacing + (numOfCells - 1) * (spacing / 2));
 	grid = makeBoard(numOfCells);
 		
 	loadWordsToGrid();
@@ -175,7 +176,7 @@ function hideShowWords()
 		wordsOnTheSide = true;
 	}
 	
-	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1), numOfCells * cellSize + 1);
+	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1) + 2 * spacing + (numOfCells - 1) * (spacing / 2), numOfCells * cellSize + 1 + 2 * spacing + (numOfCells - 1) * (spacing / 2));
 	
 	styleConfiguration();
 	draw();
@@ -193,7 +194,7 @@ function hideShowLetters()
 		hideRandomLetters = true;
 	}
 	
-	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1), numOfCells * cellSize + 1);
+	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1) + 2 * spacing + (numOfCells - 1) * (spacing / 2), numOfCells * cellSize + 1 + 2 * spacing + (numOfCells - 1) * (spacing / 2));
 	
 	styleConfiguration();
 	draw();
@@ -287,7 +288,7 @@ function loadWordsToGrid()
 	{
 		for (var j = 0; j < numOfCells; ++j)
 		{
-			grid[i][j] = new Cell(i * cellSize, j * cellSize, cellSize);	
+			grid[i][j] = new Cell(i * cellSize, j * cellSize, cellSize, i, j);	
 		}
 	}
 	
@@ -659,7 +660,7 @@ function generateLetters()
 	{
 		for (let j = 0; j < numOfCells; ++j)
 		{
-			randomLettersGrid[i][j] = new Cell(i * cellSize, j * cellSize, cellSize);
+			randomLettersGrid[i][j] = new Cell(i * cellSize, j * cellSize, cellSize, i, j);
 			randomLettersGrid[i][j].letter = grid[i][j].letter;
 		}
 	}
@@ -718,7 +719,7 @@ function draw()
 	if (wordsOnTheSide && sidebarWordsReady)
 	{	
 		textAlign(CENTER, TOP);
-		text(getWordsForSidebar(), numOfCells * cellSize + 20, 20, cellSize * textFieldSize - 35, numOfCells * cellSize - 30);
+		text(getWordsForSidebar(), numOfCells * cellSize + 20 + 2 * spacing + (numOfCells - 1) * (spacing / 2), 20, cellSize * textFieldSize - 35, numOfCells * cellSize - 30);
 	}
 	
 	noLoop();
