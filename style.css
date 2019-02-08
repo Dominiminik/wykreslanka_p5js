@@ -69,11 +69,6 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
 	z-index: 1;
 }
 
-#canvas_section canvas
-{
-	outline: 1px solid green;
-}
-
 #config_section
 {
 	background-color: rgba(255, 255, 255, 0.6);
