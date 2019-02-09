@@ -20,5 +20,5 @@ Cell.prototype.show = function()
 	fill(0);
 	textSize(this.letterSize);
 	textAlign(CENTER, CENTER);
-	text(this.letter, this.xPos + this.width * 0.5, this.yPos + this.width * 0.5);
+	text(this.letter, this.xPos + this.width * 0.525, this.yPos + this.width * 0.525);
 }

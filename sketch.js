@@ -14,6 +14,8 @@ var spacing = 10;
 
 function setup()
 {	
+	spacing = cellSize / 3;
+	
 	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1) + 2 * spacing + (numOfCells - 1) * (spacing / 2), numOfCells * cellSize + 1 + 2 * spacing + (numOfCells - 1) * (spacing / 2));
 	grid = makeBoard(numOfCells);
 	
@@ -35,7 +37,12 @@ function styleConfiguration()
 
 function createAndPositionElements()
 {
-	document.getElementById("info_p").innerHTML = "<li>bez dostarczenia pliku z danymi wyrazy losowane są z domyślnej listy 100 angielskich wyrazów</li><li>w celu wyświetlania polskich znaków należy ustawić kodowanie ładowanego pliku na UTF-8</li><li>format danych wejściowych: w pliku tekstowym każdy wyraz w nowej linii</li>";
+	document.getElementById("info_p").innerHTML = `<li>bez dostarczenia pliku z danymi wyrazy losowane są z domyślnej listy 100 angielskich wyrazów</li>
+												   <li>w celu wyświetlania polskich znaków należy ustawić kodowanie ładowanego pliku na UTF-8</li>
+												   <li>format danych wejściowych: w pliku tekstowym każdy wyraz w nowej linii</li>
+												   <li>aplikacja działa najlepiej w przeglądarkach Google Chrome, Opera i Microsoft Edge</li>
+												   <li>w Mozilli Firefox występują rozmycia tekstu i spowolnione animacje</li>
+												   <li>aplikacja nie działa w przeglądarce Internet Explorer</li>`;
 		
 	let table = createElement("table");
 	
@@ -141,6 +148,7 @@ function generate()
 	numOfWordsToFind = numOfWordsToFind > 100 ? 100 : numOfWordsToFind;
 	numOfWordsToFind = numOfWordsToFind < 1 ? 1 : numOfWordsToFind;
 	
+	spacing = cellSize / 3;
 	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1) + 2 * spacing + (numOfCells - 1) * (spacing / 2), numOfCells * cellSize + 1 + 2 * spacing + (numOfCells - 1) * (spacing / 2));
 	grid = makeBoard(numOfCells);
 		
@@ -176,6 +184,7 @@ function hideShowWords()
 		wordsOnTheSide = true;
 	}
 	
+	spacing = cellSize / 3;
 	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1) + 2 * spacing + (numOfCells - 1) * (spacing / 2), numOfCells * cellSize + 1 + 2 * spacing + (numOfCells - 1) * (spacing / 2));
 	
 	styleConfiguration();
@@ -194,6 +203,7 @@ function hideShowLetters()
 		hideRandomLetters = true;
 	}
 	
+	spacing = cellSize / 3;
 	c = createCanvas(numOfCells * cellSize + (wordsOnTheSide ? textFieldSize * cellSize : 1) + 2 * spacing + (numOfCells - 1) * (spacing / 2), numOfCells * cellSize + 1 + 2 * spacing + (numOfCells - 1) * (spacing / 2));
 	
 	styleConfiguration();
@@ -284,6 +294,8 @@ var rejectedWords = [];
 // loading words from file and writing them onto the grid
 function loadWordsToGrid()
 {
+	spacing = cellSize / 3;
+		
 	for (var i = 0; i < numOfCells; ++i)
 	{
 		for (var j = 0; j < numOfCells; ++j)
@@ -655,6 +667,8 @@ function generateLetters()
 	var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
 	randomLettersGrid = makeBoard(numOfCells);
+	
+	spacing = cellSize / 3;
 	
 	for (let i = 0; i < numOfCells; ++i)
 	{
